@@ -1,0 +1,30 @@
+version: '2'
+
+networks:
+    front: {}
+    back: {}
+    proxy:
+        external:
+            name: proxy
+
+services:
+    nginx:
+        image: nginx:1-alpine
+        networks:
+            - front
+            - proxy
+            - back
+
+    db:
+        image: mysql
+        networks:
+            - back
+        labels:
+            - "traefik.enable=false"
+
+    es:
+        image: elasticsearch:2-alpine
+        networks:
+            - back
+        labels:
+            - "traefik.enable=false"
